@@ -1,0 +1,16 @@
+{
+  "name": "ferco-planificacion-mcp",
+  "version": "0.1.0",
+  "description": "Conector MCP 'Ferco Planificación': traduce herramientas a la API /api/planificacion del app de Picking. Sin credenciales: reenvía el pase del usuario.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node src/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "zod": "^3.23.8"
+  }
+}
