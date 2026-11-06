@@ -168,6 +168,18 @@ function buildServer(token) {
 const app = express();
 app.use(express.json({ limit: '1mb' }));
 
+// Bitácora de peticiones (diagnóstico): PLAN_LOG_REQUESTS=1 → una línea por petición, sin el pase.
+if (process.env.PLAN_LOG_REQUESTS === '1') {
+    app.use((req, res, next) => {
+        const t0 = Date.now();
+        res.on('finish', () => {
+            const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+            console.log(`${req.method} ${req.originalUrl} → ${res.statusCode} (${Date.now() - t0} ms) ip=${ip} ua="${req.headers['user-agent'] || ''}" origin=${req.headers.origin || '-'} auth=${req.headers.authorization ? 'si' : 'no'}`);
+        });
+        next();
+    });
+}
+
 const cors = (res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
